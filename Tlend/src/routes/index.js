@@ -4,6 +4,8 @@ const { Router } = require('express')
 const user = require('./user')
 const reward = require('./reward')
 const support = require('./support')
+const home = require('./home')
+const media = require('./media')
 
 const router = Router()
 
@@ -12,6 +14,8 @@ const router = Router()
 router.use('/user', user)
 router.use('/reward', reward)
 router.use('/support', support)
+router.use('/home', home)
+router.use('/media', media)
 
 
 module.exports = router
