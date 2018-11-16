@@ -7,6 +7,7 @@ const support = require('./support')
 const home = require('./home')
 const media = require('./media')
 const idol = require('./idol')
+const search = require('./search')
 
 const router = Router()
 
@@ -18,6 +19,7 @@ router.use('/support', support)
 router.use('/home', home)
 router.use('/media', media)
 router.use('/idol', idol)
+router.use('/search', search)
 
 
 module.exports = router

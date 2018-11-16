@@ -73,3 +73,19 @@ exports.postReward = (Transaction, req, next) => {
     return next(error)
   })
 }
+
+// reward funding
+exports.rewardFund = (Transaction, next, req) => {
+  Transaction(async (connection) => {
+    const Query1 = `
+     SELECT reward_currentMoney FROM REWARD WHERE reward_idx = ${req.params.reward_idx}`
+    const currentMoney = await connection.query(Query1)
+    const sum = currentMoney[0].reward_currentMoney + Number(req.body.itemPrice)
+    const Query2 = `
+      UPDATE REWARD SET reward_currentMoney = ${sum} WHERE reward_idx = ${req.params.reward_idx}`
+    await connection.query(Query2)
+    console.log('success')
+  }).catch(error => {
+    return next(error)
+  })
+}

@@ -11,3 +11,10 @@ exports.postSupport = async (req, next) => {
   }
 }
 
+exports.postSupportFund = async (req, next) => {
+  try {
+    await supportDao.supportFund(Transaction, next, req)
+  } catch (e) {
+    console.log(e.message)
+  }
+}

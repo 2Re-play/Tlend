@@ -28,7 +28,7 @@ exports.postReward = async (req, res, next) => {
     reward_shipping,
     reward_schedule,
   }
-  console.log("배열:", req.body.item)
+  console.log('배열:', req.body.item)
   const validation = Joi.validate(validation_data, sheme)
   if (validation.error) {
     throw new Error(403)
@@ -42,5 +42,15 @@ exports.postReward = async (req, res, next) => {
     } else {
       response.respondOnError('서버 내부 에러', res, 500)
     }
+  }
+}
+
+exports.postRewardFund = async (req, res, next) => {
+  try {
+    await rewardService.postRewardFund(req, next)
+    response.respondJson2('Successfully post reward fund', res, 200)
+  } catch (e) {
+    console.log(e)
+    response.respondOnError(e.message, res, 500)
   }
 }

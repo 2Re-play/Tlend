@@ -9,6 +9,8 @@ const reward = Router()
 /* GET home page. */
 const cpUpload = upload.fields([{ name: 'image', maxCount: 5 }, { name: 'detailImage', maxCount: 1 }])
 reward.post('/', cpUpload, rewardCtrl.postReward)
+// reward funding
+reward.post('/:reward_idx', rewardCtrl.postRewardFund)
 
 
 module.exports = reward

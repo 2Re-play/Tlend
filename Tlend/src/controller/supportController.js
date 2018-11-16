@@ -42,3 +42,13 @@ exports.postSupport = async (req, res, next) => {
     }
   }
 }
+
+exports.postSupportFund = async (req, res, next) => {
+  try {
+    await supportService.postSupportFund(req, next)
+    response.respondJson2('Successfully post support fund', res, 200)
+  } catch (e) {
+    console.log(e)
+    response.respondOnError(e.message, res, 500)
+  }
+}

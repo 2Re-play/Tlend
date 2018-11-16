@@ -10,3 +10,11 @@ exports.postReward = async (req, next) => {
     console.log(e.message)
   }
 }
+
+exports.postRewardFund = async (req, next) => {
+  try {
+    await rewardDao.rewardFund(Transaction, next, req)
+  } catch (e) {
+    console.log(e.message)
+  }
+}

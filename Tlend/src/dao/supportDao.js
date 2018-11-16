@@ -69,3 +69,18 @@ exports.postSupport = (Transaction, req, next) => {
     return next(error)
   })
 }
+
+exports.supportFund = (Transaction, next, req) => {
+  Transaction(async (connection) => {
+    const Query1 = `
+     SELECT support_currentMoney FROM SUPPORT WHERE support_idx = ${req.params.support_idx}`
+    const currentMoney = await connection.query(Query1)
+    const sum = currentMoney[0].support_currentMoney + Number(req.body.itemPrice)
+    const Query2 = `
+      UPDATE SUPPORT SET support_currentMoney = ${sum} WHERE support_idx = ${req.params.support_idx}`
+    await connection.query(Query2)
+    console.log('success')
+  }).catch(error => {
+    return next(error)
+  })
+}
