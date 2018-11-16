@@ -43,6 +43,8 @@ exports.mainHome = async (req, next) => {
     console.log(info)
   } catch (e) {
     console.log(e.message)
+  } finally {
+      connection.release()
   }
   return info
 }

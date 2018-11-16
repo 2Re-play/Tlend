@@ -16,6 +16,10 @@ idol.post('/member', upload.fields([
   { name: 'image' },
 ]), idolCtrl.postMember)
 
-idol.get('/home/:idol_idx', idolCtrl.home)
+idol.get('/:idol_idx/home', idolCtrl.home)
+
+idol.get('/:idol_idx/reward', idolCtrl.getReward)
+
+idol.get('/:idol_idx/support', idolCtrl.getSupport)
 
 module.exports = idol

@@ -74,7 +74,7 @@ exports.getHome = (Transaction, req, next) => {
 
 exports.getReward = (connection, req) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT reward_idx, reward_title, user_nickname, image_key FROM (REWARD r JOIN IMAGE USING(reward_idx)) JOIN USER USING(user_idx) WHERE r.idol_idx = ${req.params.idol_idx}`
+    const Query = `SELECT reward_idx, reward_title, user_nickname, image_key, reward_finishDate, reward_currentMoney, reward_goalMoney  FROM (REWARD r JOIN IMAGE USING(reward_idx)) JOIN USER USING(user_idx) WHERE r.idol_idx = ${req.params.idol_idx}`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)
@@ -84,7 +84,17 @@ exports.getReward = (connection, req) => {
 
 exports.getSupport = (connection, req) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT support_idx, support_title, user_nickname, image_key FROM (SUPPORT s JOIN IMAGE USING(support_idx)) JOIN USER USING(user_idx) WHERE s.idol_idx = ${req.params.idol_idx} ;`
+    const Query = `SELECT support_idx, support_title, user_nickname, image_key, support_finishDate, support_currentMoney, support_goalMoney FROM (SUPPORT s JOIN IMAGE USING(support_idx)) JOIN USER USING(user_idx) WHERE s.idol_idx = ${req.params.idol_idx} ;`
+    connection.query(Query, (err, result) => {
+      err && reject(err)
+      resolve(result)
+    })
+  })
+}
+
+exports.getTop = (connection, req) => {
+  return new Promise((resolve, reject) => {
+    const Query = `SELECT idol_idx, idol_name, idol_company, image_key as group_titleImg FROM IDOL JOIN IMAGE USING(idol_idx)WHERE idol_idx = ${req.params.idol_idx}`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)

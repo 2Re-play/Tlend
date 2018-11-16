@@ -2,7 +2,7 @@ const { Transaction, getConnection } = require('../lib/dbConnection')
 const supportDao = require('../dao/supportDao')
 
 
-// 회원가입
+// 서포트 상품 등록하기
 exports.postSupport = async (req, next) => {
   try {
     await supportDao.postSupport(Transaction, req, next)
@@ -10,3 +10,4 @@ exports.postSupport = async (req, next) => {
     console.log(e.message)
   }
 }
+
