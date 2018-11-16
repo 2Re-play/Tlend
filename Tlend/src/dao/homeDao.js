@@ -58,18 +58,14 @@ FROM
 
 exports.idxToName = (Transaction, itemRanking, next) => {
   const idol_name = []
+  let result1
   return Transaction(async (connection) => {
-    const Query1 = `
-            SELECT idol_name FROM IDOL WHERE idol_idx = ${itemRanking.first}`
-    const result1 = await connection.query(Query1)
-
-    const Query2 = `
-            SELECT idol_name FROM IDOL WHERE idol_idx = ${itemRanking.second}`
-    const result2 = await connection.query(Query2)
-    const Query3 = `
-          SELECT idol_name FROM IDOL WHERE idol_idx = ${itemRanking.third}`
-    const result3 = await connection.query(Query3)
-    idol_name.push(result1[0], result2[0], result3[0])
+    for (const i in itemRanking) {
+      const Query1 = `
+            SELECT idol_name FROM IDOL WHERE idol_idx = ${itemRanking[i]}`
+      result1 = await connection.query(Query1)
+      idol_name.push(result1[0])
+    }
     return idol_name
   }).catch(error => {
     return next(error)

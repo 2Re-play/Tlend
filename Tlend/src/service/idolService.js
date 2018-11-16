@@ -1,5 +1,6 @@
 const { Transaction, getConnection } = require('../lib/dbConnection')
 const idolDao = require('../dao/idolDao')
+const homeDao = require('../dao/homeDao')
 const cloudfront = require('../lib/cloudfront')
 const { closingDate } = require('../lib/closingDate')
 const { percent } = require('../lib/percent')
@@ -29,26 +30,21 @@ exports.getHome = async (req, next) => {
   let result
   try {
     const idol_group = await idolDao.getHome(Transaction, req, next)
-    const reward = await idolDao.getReward(connection, req)
-    const support = await idolDao.getSupport(connection, req)
+    // media 콘텐츠 추가하기
+    const arr_slice = await homeDao.getMedia(connection)
+    for (const i in arr_slice) {
+      arr_slice[i].video_key = await cloudfront.video(arr_slice[i].video_key)
+    }
+    const media = arr_slice.slice(0, 6)
     idol_group[0].group_titleImg = await cloudfront.video(idol_group[0].group_titleImg)
     for (const i in idol_group[1]) {
       console.log(idol_group[1])
       idol_group[1][i].member_imgKey = await cloudfront.video(idol_group[1][i].member_imgKey)
     }
 
-    for (const i in reward) {
-      reward[i].image_key = await cloudfront.video(reward[i].image_key)
-    }
-    for (const i in support) {
-      support[i].image_key = await cloudfront.video(support[i].image_key)
-    }
-    const merge = reward.concat(support)
-    const arr_slice = shuffle(merge)
-    const item = arr_slice.slice(0, 6)
     result = {
       idol_group,
-      item,
+      media,
     }
   } catch (e) {
     console.log(e.message)

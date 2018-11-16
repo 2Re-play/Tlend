@@ -9,7 +9,6 @@ exports.mainHome = async (req, next) => {
   try {
     const mybaby = await homeDao.myBaby(Transaction, req, next)
     const ranking = await homeDao.ranking(connection)
-    console.log(ranking[0].reward_currentMoney + ranking[0].support_currentMoney)
     for (const i in ranking) {
       const total = ranking[i].reward_currentMoney + ranking[i].support_currentMoney
       ranking[i].reward_currentMoney = total
@@ -19,15 +18,11 @@ exports.mainHome = async (req, next) => {
     ranking.sort((a, b) => { // 오름차순
       return b[sortingField] - a[sortingField]
     })
-    console.log('123123', ranking)
-    const first_idol = ranking[0].a_idol
-    const second_idol = ranking[1].a_idol
-    const third_idol = ranking[2].a_idol
-    const itemRanking = {
-      first: first_idol,
-      second: second_idol,
-      third: third_idol,
+    const itemRanking = []
+    for (const i in ranking) {
+      itemRanking.push(ranking[i].a_idol)
     }
+
     const idol_rank = await homeDao.idxToName(Transaction, itemRanking, next)
     const media = await homeDao.getMedia(connection)
     for (const i in media) {
@@ -44,7 +39,7 @@ exports.mainHome = async (req, next) => {
   } catch (e) {
     console.log(e.message)
   } finally {
-      connection.release()
+    connection.release()
   }
   return info
 }
