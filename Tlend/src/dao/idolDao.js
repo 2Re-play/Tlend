@@ -1,6 +1,7 @@
 exports.postIdol = (Transaction, req, next) => {
   Transaction(async (connection) => {
     const imageData = req.files.image[0]
+    const banner = req.files.banner[0]
     const Query1 = `INSERT INTO
             IDOL(
                 idol_name, idol_company)
@@ -21,6 +22,15 @@ exports.postIdol = (Transaction, req, next) => {
             "${imageData.transforms[0].location}",
             "${imageData.transforms[0].size}")`
     await connection.query(Query3)
+    const Query4 = `
+          INSERT INTO IMAGE
+            (banner_idx, image_originalName, image_key, image_location, image_size) 
+      VALUES(${idol_idx[0].idol_idx},
+            "${banner.originalname}",
+            "${banner.transforms[0].key}",
+            "${banner.transforms[0].location}",
+            "${banner.transforms[0].size}")`
+    await connection.query(Query4)
     console.log('success')
   }).catch(error => {
     return next(error)
@@ -94,7 +104,7 @@ exports.getSupport = (connection, req) => {
 
 exports.getTop = (connection, req) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT idol_idx, idol_name, idol_company, image_key as group_titleImg FROM IDOL JOIN IMAGE USING(idol_idx)WHERE idol_idx = ${req.params.idol_idx}`
+    const Query = `SELECT banner_idx, image_key as bannerImage FROM IMAGE WHERE banner_idx = ${req.params.idol_idx}`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)

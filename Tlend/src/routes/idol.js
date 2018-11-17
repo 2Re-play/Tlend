@@ -10,6 +10,7 @@ const idol = Router()
 /* GET home page. */
 idol.post('/', upload.fields([
   { name: 'image' },
+  { name: 'banner' },
 ]), idolCtrl.postIdol)
 
 idol.post('/member', upload.fields([

@@ -5,9 +5,11 @@ exports.postMedia = (Transaction, req, next) => {
     // const detailImg = req.files.detailImage[0]
     const Query1 = `INSERT INTO
             MEDIA(
+                idol_idx,
                 media_title,
                 media_description)
             VALUES (
+                ${req.params.idol_idx},
                 "${req.body.media_title}",
                 "${req.body.media_description}"
                      )`

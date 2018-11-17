@@ -24,7 +24,7 @@ exports.mainHome = async (req, next) => {
     }
 
     const idol_rank = await homeDao.idxToName(Transaction, itemRanking, next)
-    const media = await homeDao.getMedia(connection)
+    const media = await homeDao.getMedia(connection, req)
     for (const i in media) {
       console.log(i)
       console.log('123123123213', media)

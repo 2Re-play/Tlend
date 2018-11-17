@@ -31,7 +31,7 @@ exports.getHome = async (req, next) => {
   try {
     const idol_group = await idolDao.getHome(Transaction, req, next)
     // media 콘텐츠 추가하기
-    const arr_slice = await homeDao.getMedia(connection)
+    const arr_slice = await homeDao.getIdolMedia(connection, req)
     for (const i in arr_slice) {
       arr_slice[i].video_key = await cloudfront.video(arr_slice[i].video_key)
     }
@@ -61,7 +61,8 @@ exports.getReward = async (req) => {
   try {
     const idol_group = await idolDao.getTop(connection, req)
     const reward = await idolDao.getReward(connection, req)
-    idol_group[0].group_titleImg = await cloudfront.video(idol_group[0].group_titleImg)
+    console.log(idol_group)
+    idol_group[0].bannerImage = await cloudfront.video(idol_group[0].image_key)
     for (const i in reward) {
       reward[i].image_key = await cloudfront.video(reward[i].image_key)
       reward[i].D_day = await closingDate(reward[i].reward_finishDate)
@@ -70,8 +71,9 @@ exports.getReward = async (req) => {
       delete reward[i].reward_goalMoney
       delete reward[i].reward_finishDate
     }
+    const banner = idol_group[0]
     result = {
-      idol_group,
+      banner,
       reward,
     }
   } catch (e) {

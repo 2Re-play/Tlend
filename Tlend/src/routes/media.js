@@ -8,7 +8,7 @@ const upload = multer('reward')
 const media = Router()
 
 /* GET home page. */
-media.post('/', upload.fields([
+media.post('/:idol_idx', upload.fields([
   { name: 'video' },
   { name: 'image' },
 ]), mediaCtrl.postMedia)

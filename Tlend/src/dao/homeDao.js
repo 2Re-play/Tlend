@@ -76,11 +76,29 @@ exports.getMedia = (connection) => {
   return new Promise((resolve, reject) => {
     const Query = `
     SELECT 
+      media_idx,
       media_title,
       b.video_key
     FROM
       MEDIA a
     JOIN VIDEO b USING (media_idx)`
+    connection.query(Query, (err, result) => {
+      err && reject(err)
+      resolve(result)
+    })
+  })
+}
+
+exports.getIdolMedia = (connection, req) => {
+  return new Promise((resolve, reject) => {
+    const Query = `
+    SELECT 
+      media_idx,
+      media_title,
+      b.video_key
+    FROM
+      MEDIA a
+    JOIN VIDEO b USING (media_idx) WHERE idol_idx = ${req.params.idol_idx}`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)
