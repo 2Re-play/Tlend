@@ -61,7 +61,7 @@ exports.getReward = async (req) => {
   try {
     const idol_group = await idolDao.getTop(connection, req)
     const reward = await idolDao.getReward(connection, req)
-    idol_group[0].bannerImage = await cloudfront.video(idol_group[0].image_key)
+    idol_group[0].bannerImage = await cloudfront.video(idol_group[0].bannerImage)
     for (const i in reward) {
       reward[i].image_key = await cloudfront.video(reward[i].image_key)
       reward[i].D_day = await closingDate(reward[i].reward_finishDate)
@@ -90,7 +90,8 @@ exports.getSupport = async (req) => {
   try {
     const idol_group = await idolDao.getTop(connection, req)
     const support = await idolDao.getSupport(connection, req)
-    idol_group[0].group_titleImg = await cloudfront.video(idol_group[0].group_titleImg)
+    console.log(idol_group)
+    idol_group[0].bannerImage = await cloudfront.video(idol_group[0].bannerImage)
     for (const i in support) {
       support[i].image_key = await cloudfront.video(support[i].image_key)
       support[i].D_day = await closingDate(support[i].support_finishDate)
@@ -99,8 +100,9 @@ exports.getSupport = async (req) => {
       delete support[i].support_goalMoney
       delete support[i].support_finishDate
     }
+    const banner = idol_group[0]
     result = {
-      idol_group,
+      banner,
       support,
     }
   } catch (e) {
@@ -308,5 +310,3 @@ exports.getIdol = async () => {
   }
   return result
 }
-
-
