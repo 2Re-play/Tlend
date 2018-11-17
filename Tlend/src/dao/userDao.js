@@ -42,7 +42,7 @@ exports.signUp = (Transaction, req, next) => {
 
 exports.signIn = (connection, req) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT user_id, user_pw FROM USER WHERE user_id = "${req.body.id}" AND user_pw = "${req.body.pw}"`
+    const Query = `SELECT user_idx, user_id, user_pw FROM USER WHERE user_id = "${req.body.id}" AND user_pw = "${req.body.pw}"`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result[0])

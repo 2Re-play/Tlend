@@ -17,7 +17,7 @@ exports.getSearchSupport = async (req, res) => {
 exports.getSearchReward = async (req, res) => {
   try {
     const { query } = req.query
-    const result = await searchService.getSearchIdol(query)
+    const result = await searchService.getSearchReward(query)
     response.respondJson('Successfully get reward item', result, res, 200)
   } catch (e) {
     console.log(e)

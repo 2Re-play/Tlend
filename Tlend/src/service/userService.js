@@ -17,6 +17,10 @@ exports.signIn = async (req) => {
   let result
   try {
     result = await userDao.signIn(connection, req)
+    if (result) {
+      delete result.user_id
+      delete result.user_pw
+    }
   } catch (e) {
     console.log(e.message)
   } finally {

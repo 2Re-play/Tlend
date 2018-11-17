@@ -78,10 +78,10 @@ exports.getMedia = (connection) => {
     SELECT 
       media_idx,
       media_title,
-      b.video_key
+      b.image_key
     FROM
-      MEDIA a
-    JOIN VIDEO b USING (media_idx)`
+      MEDIA_TITLE_IMAGE a
+    JOIN MEDIA b USING (media_idx)`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)
@@ -95,10 +95,10 @@ exports.getIdolMedia = (connection, req) => {
     SELECT 
       media_idx,
       media_title,
-      b.video_key
+      b.image_key
     FROM
       MEDIA a
-    JOIN VIDEO b USING (media_idx) WHERE idol_idx = ${req.params.idol_idx}`
+    JOIN MEDIA_TITLE_IMAGE b USING (media_idx) WHERE idol_idx = ${req.params.idol_idx}`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)

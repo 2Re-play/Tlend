@@ -89,3 +89,23 @@ exports.rewardFund = (Transaction, next, req) => {
     return next(error)
   })
 }
+
+// reward total items
+exports.getReward = (connection, idol_idx) => {
+  return new Promise((resolve, reject) => {
+    const Query = `SELECT 
+    reward_idx, reward_title, user_nickname, image_key
+FROM
+    (REWARD r
+    JOIN USER u USING (user_idx))
+        JOIN
+    IMAGE i USING (reward_idx)
+WHERE
+    r.idol_idx = ${idol_idx}
+GROUP BY reward_idx`
+    connection.query(Query, (err, result) => {
+      err && reject(err)
+      resolve(result)
+    })
+  })
+}

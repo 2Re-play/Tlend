@@ -10,8 +10,11 @@ const media = Router()
 /* GET home page. */
 media.post('/:idol_idx', upload.fields([
   { name: 'video' },
-  { name: 'image' },
+  { name: 'detail_image' },
+  { name: 'title_image' },
 ]), mediaCtrl.postMedia)
+
+media.get('/:media_idx', mediaCtrl.getMedia)
 
 
 module.exports = media

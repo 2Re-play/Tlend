@@ -59,7 +59,7 @@ exports.signIn = async (req, res) => {
     if (!signIn) {
       response.respondJson2('id, pw가 맞지않습니다', res, 401)
     } else {
-      response.respondJson2('Successfully sign in', res, 200)
+      response.respondJson('Successfully sign in', signIn, res, 200)
     }
   } catch (e) {
     if (e.message === '403') {

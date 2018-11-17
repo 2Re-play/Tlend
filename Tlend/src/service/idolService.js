@@ -33,7 +33,7 @@ exports.getHome = async (req, next) => {
     // media 콘텐츠 추가하기
     const arr_slice = await homeDao.getIdolMedia(connection, req)
     for (const i in arr_slice) {
-      arr_slice[i].video_key = await cloudfront.video(arr_slice[i].video_key)
+      arr_slice[i].image_key = await cloudfront.video(arr_slice[i].image_key)
     }
     const media = arr_slice.slice(0, 6)
     idol_group[0].group_titleImg = await cloudfront.video(idol_group[0].group_titleImg)
@@ -61,15 +61,14 @@ exports.getReward = async (req) => {
   try {
     const idol_group = await idolDao.getTop(connection, req)
     const reward = await idolDao.getReward(connection, req)
-    console.log(idol_group)
     idol_group[0].bannerImage = await cloudfront.video(idol_group[0].image_key)
     for (const i in reward) {
       reward[i].image_key = await cloudfront.video(reward[i].image_key)
       reward[i].D_day = await closingDate(reward[i].reward_finishDate)
       reward[i].percent = Math.ceil(await percent(reward[i].reward_currentMoney, reward[i].reward_goalMoney))
+      delete reward[i].reward_finishDate
       delete reward[i].reward_currentMoney
       delete reward[i].reward_goalMoney
-      delete reward[i].reward_finishDate
     }
     const banner = idol_group[0]
     result = {
@@ -310,23 +309,4 @@ exports.getIdol = async () => {
   return result
 }
 
-// 배열 랜덤 정렬
-function shuffle(array) {
-  let currentIndex = array.length; let temporaryValue; let 
-    randomIndex
 
-  // While there remain elements to shuffle...
-  while (currentIndex !== 0) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex -= 1
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex]
-    array[currentIndex] = array[randomIndex]
-    array[randomIndex] = temporaryValue
-  }
-
-  return array
-}

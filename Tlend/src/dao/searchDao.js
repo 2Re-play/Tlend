@@ -12,7 +12,21 @@ exports.getSearchSupport = (connection, query) => {
 // 검색 리워드 상품 정렬
 exports.getSearchReward = (connection, query) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT reward_idx, reward_title, user_nickname, reward_finishDate, reward_startDate, reward_goalMoney, reward_currentMoney FROM REWARD JOIN USER USING (user_idx) WHERE reward_title LIKE '%${query}%'`
+    const Query = `    
+    SELECT 
+    reward_idx,
+    reward_title,
+    user_nickname,
+    reward_finishDate,
+    reward_startDate,
+    reward_goalMoney,
+    reward_currentMoney
+FROM
+    REWARD
+        JOIN
+    USER USING (user_idx)
+WHERE
+    reward_title LIKE '%${query}%'`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)

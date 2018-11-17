@@ -14,6 +14,7 @@ exports.getSearchSupport = async (query) => {
     for (const i in supportItemList) {
       const supportListKey = await searchDao.supportImageKey(connection, supportItemList[i].support_idx)
       supportItemList[i].image_key = await cloudfront.video(supportListKey.image_key)
+      supportItemList[i].percent = Math.ceil(await percent(supportItemList[i].support_currentMoney, supportItemList[i].support_goalMoney))
       supportItemList[i].d_day = await closingDate(supportItemList[i].support_finishDate)
       delete supportItemList[i].support_currentMoney
       delete supportItemList[i].support_goalMoney
@@ -36,6 +37,7 @@ exports.getSearchReward = async (query) => {
   const connection = await getConnection()
   let result
   try {
+    console.log('qeury', query)
     const rewardItemList = await searchDao.getSearchReward(connection, query)
     console.log(rewardItemList)
     for (const i in rewardItemList) {
