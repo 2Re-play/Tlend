@@ -57,7 +57,7 @@ exports.postSupport = (Transaction, req, next) => {
     }
     const Query5 = `
           INSERT INTO DETAIL_IMAGE
-            (reward_idx, image_originalName, image_key, image_location, image_size) 
+            (support_idx, image_originalName, image_key, image_location, image_size) 
       VALUES(${support_idx[0].support_idx},
             "${detailImg.originalname}",
             "${detailImg.transforms[0].key}",

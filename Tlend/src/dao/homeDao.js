@@ -78,7 +78,7 @@ exports.getMedia = (connection) => {
     SELECT 
       media_idx,
       media_title,
-      b.image_key
+      a.image_key
     FROM
       MEDIA_TITLE_IMAGE a
     JOIN MEDIA b USING (media_idx)`

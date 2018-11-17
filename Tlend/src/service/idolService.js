@@ -174,6 +174,7 @@ exports.getSupportDetail = async (req, next) => {
       }
     }
     const lowPrice = item_prices[flag]
+      console.log('1123123', support)
     for (const i in support[0]) {
       support[0][i].image_key = await cloudfront.video(support[0][i].image_key)
     }
@@ -203,7 +204,7 @@ exports.getSupportDetail = async (req, next) => {
 
 // 특정 아이돌 리워드 정보 가져오기 (기본정보탭)
 exports.getRewardDefault = async (req, next) => {
-  // const connection = await getConnection()
+
   let result
   try {
     const reward = await idolDao.getRewardDefault(Transaction, req, next)
@@ -240,8 +241,6 @@ exports.getRewardDefault = async (req, next) => {
     }
   } catch (e) {
     console.log(e.message)
-  } finally {
-    // connection.release()
   }
   return result
 }
