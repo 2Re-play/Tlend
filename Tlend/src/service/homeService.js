@@ -9,6 +9,9 @@ exports.mainHome = async (req, next) => {
   try {
     const mybaby = await homeDao.myBaby(Transaction, req, next)
     const ranking = await homeDao.ranking(connection)
+    for (const i in mybaby) {
+      mybaby[i].image_key = await cloudfront.video(mybaby[i].image_key)
+    }
     for (const i in ranking) {
       const total = ranking[i].reward_currentMoney + ranking[i].support_currentMoney
       ranking[i].reward_currentMoney = total

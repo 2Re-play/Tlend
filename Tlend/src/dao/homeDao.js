@@ -6,9 +6,13 @@ exports.myBaby = (Transaction, req, next) => {
     const idol_idx = await connection.query(Query1)
     for (const i in idol_idx) {
       const Query2 = `
-            SELECT idol_idx,idol_name FROM IDOL WHERE idol_idx = ${idol_idx[i].idol_idx}`
+            SELECT idol_idx, idol_name, image_key FROM IDOL JOIN IMAGE USING(idol_idx)WHERE idol_idx = ${idol_idx[i].idol_idx}`
       result = await connection.query(Query2)
-      idol_name.push(result[0].idol_name)
+
+      // const idol = {
+      // }
+      console.log('111111', result)
+      idol_name.push(result[0])
     }
     console.log(idol_name)
     return idol_name
