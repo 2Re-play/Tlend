@@ -23,14 +23,17 @@ exports.mainHome = async (req, next) => {
       itemRanking.push(ranking[i].a_idol)
     }
 
-    const idol_rank = await homeDao.idxToName(Transaction, itemRanking, next)
+    const idol_name = await homeDao.idxToName(Transaction, itemRanking, next)
+    for (const i in idol_name) {
+      idol_name[i].idol_idx = itemRanking[i]
+    }
     const media = await homeDao.getMedia(connection, req)
     for (const i in media) {
       media[i].image_key = await cloudfront.video(media[i].image_key)
     }
     info = {
       mybaby,
-      idol_rank,
+      idol_name,
       media,
     }
     console.log(info)
