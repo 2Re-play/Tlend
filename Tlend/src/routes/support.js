@@ -9,7 +9,7 @@ const support = Router()
 /* GET home page. */
 const cpUpload = upload.fields([{ name: 'image', maxCount: 5 }, { name: 'detailImage', maxCount: 1 }])
 support.post('/', cpUpload, supportCtrl.postSupport)
-support.post('/:support_idx', supportCtrl.postSupportFund)
+support.post('/:support_idx/fund', supportCtrl.postSupportFund)
 
 
 module.exports = support

@@ -59,7 +59,7 @@ exports.getReward = async (req) => {
   const connection = await getConnection()
   let result
   try {
-    const idol_group = await idolDao.getTop(connection, req)
+    const idol_group = await idolDao.getTopReward(connection, req)
     const reward = await idolDao.getReward(connection, req)
     idol_group[0].bannerImage = await cloudfront.video(idol_group[0].bannerImage)
     for (const i in reward) {
@@ -88,7 +88,7 @@ exports.getSupport = async (req) => {
   const connection = await getConnection()
   let result
   try {
-    const idol_group = await idolDao.getTop(connection, req)
+    const idol_group = await idolDao.getTopSupport(connection, req)
     const support = await idolDao.getSupport(connection, req)
     console.log(idol_group)
     idol_group[0].bannerImage = await cloudfront.video(idol_group[0].bannerImage)

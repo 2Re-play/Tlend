@@ -1,7 +1,8 @@
 exports.postIdol = (Transaction, req, next) => {
   Transaction(async (connection) => {
     const imageData = req.files.image[0]
-    const banner = req.files.banner[0]
+    const reward_banner = req.files.reward_banner[0]
+    const support_banner = req.files.support_banner[0]
     const Query1 = `INSERT INTO
             IDOL(
                 idol_name, idol_company)
@@ -24,13 +25,22 @@ exports.postIdol = (Transaction, req, next) => {
     await connection.query(Query3)
     const Query4 = `
           INSERT INTO IMAGE
-            (banner_idx, image_originalName, image_key, image_location, image_size) 
+            (reward_banner_idx, image_originalName, image_key, image_location, image_size) 
       VALUES(${idol_idx[0].idol_idx},
-            "${banner.originalname}",
-            "${banner.transforms[0].key}",
-            "${banner.transforms[0].location}",
-            "${banner.transforms[0].size}")`
+            "${reward_banner.originalname}",
+            "${reward_banner.transforms[0].key}",
+            "${reward_banner.transforms[0].location}",
+            "${reward_banner.transforms[0].size}")`
     await connection.query(Query4)
+    const Query5 = `
+          INSERT INTO IMAGE
+            (reward_banner_idx, image_originalName, image_key, image_location, image_size) 
+      VALUES(${idol_idx[0].idol_idx},
+            "${support_banner.originalname}",
+            "${support_banner.transforms[0].key}",
+            "${support_banner.transforms[0].location}",
+            "${support_banner.transforms[0].size}")`
+    await connection.query(Query5)
     console.log('success')
   }).catch(error => {
     return next(error)
@@ -115,9 +125,19 @@ exports.getSupport = (connection, req) => {
   })
 }
 
-exports.getTop = (connection, req) => {
+exports.getTopReward = (connection, req) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT banner_idx, image_key as bannerImage FROM IMAGE WHERE banner_idx = ${req.params.idol_idx}`
+    const Query = `SELECT reward_banner_idx, image_key as bannerImage FROM IMAGE WHERE reward_banner_idx = ${req.params.idol_idx}`
+    connection.query(Query, (err, result) => {
+      err && reject(err)
+      resolve(result)
+    })
+  })
+}
+
+exports.getTopSupport = (connection, req) => {
+  return new Promise((resolve, reject) => {
+    const Query = `SELECT support_banner_idx, image_key as bannerImage FROM IMAGE WHERE support_banner_idx = ${req.params.idol_idx}`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)
