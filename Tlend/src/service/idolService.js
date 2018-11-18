@@ -29,21 +29,24 @@ exports.getHome = async (req, next) => {
   const connection = await getConnection()
   let result
   try {
-    const idol_group = await idolDao.getHome(Transaction, req, next)
+    const idol_group2 = await idolDao.getHome(Transaction, req, next)
     // media 콘텐츠 추가하기
+
     const arr_slice = await homeDao.getIdolMedia(connection, req)
     for (const i in arr_slice) {
       arr_slice[i].image_key = await cloudfront.video(arr_slice[i].image_key)
     }
     const media = arr_slice.slice(0, 6)
-    idol_group[0].group_titleImg = await cloudfront.video(idol_group[0].group_titleImg)
-    for (const i in idol_group[1]) {
-      console.log(idol_group[1])
-      idol_group[1][i].member_imgKey = await cloudfront.video(idol_group[1][i].member_imgKey)
+    idol_group2[0].group_titleImg = await cloudfront.video(idol_group2[0].group_titleImg)
+    for (const i in idol_group2[1]) {
+      console.log(idol_group2[1])
+      idol_group2[1][i].member_imgKey = await cloudfront.video(idol_group2[1][i].member_imgKey)
     }
-
+    const idol_group = idol_group2[0]
+    const idol_member = idol_group2[1]
     result = {
       idol_group,
+      idol_member,
       media,
     }
   } catch (e) {
@@ -174,7 +177,7 @@ exports.getSupportDetail = async (req, next) => {
       }
     }
     const lowPrice = item_prices[flag]
-      console.log('1123123', support)
+    console.log('1123123', support)
     for (const i in support[0]) {
       support[0][i].image_key = await cloudfront.video(support[0][i].image_key)
     }
