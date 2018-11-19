@@ -6,10 +6,10 @@
 - 어플리케이션 구성 : Mobile App, Server
 
 
-# Mobile App 이 있을 경우 하기 작성
+# Mobile App
 - 운영체제 : iOS
 - 개발언어 : swift
 
-# Server가 있을 경우 하기 작성
+# Server
 - 운영기반 : clayon platform PAS, aws
 - 사용서비스 : clayon App Autoscaler, aws rds Mysql service, aws s3 service, aws CloudFront service
