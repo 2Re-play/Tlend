@@ -141,17 +141,38 @@ exports.getSupportDefault = async (req, next) => {
     for (const i in support[0]) {
       support[0][i].image_key = await cloudfront.video(support[0][i].image_key)
     }
+    console.log('0000', support[3][0].image_key)
+    support[3][0].image_key = await cloudfront.video(support[3][0].image_key)
     support[2][0].D_day = await closingDate(support[2][0].support_finishDate)
     support[2][0].percent = Math.ceil(await percent(support[2][0].support_currentMoney, support[2][0].support_goalMoney))
     support[2][0].option_name = data3.substring(0, data3.length - 1)
     support[2][0].lowPrice = lowPrice.item_price
 
-    const item_detail = support[2]
-    const item_images = support[0]
+    const item_default1 = support[2]
+    const common = {}
+    // console.log('1111', item_detail)
+    common.item_images = support[0]
+    common.support_title = item_default1[0].support_title
+    common.lowPrice = item_default1[0].lowPrice
+    common.support_currentMoney = item_default1[0].support_currentMoney
+    common.D_day = item_default1[0].D_day
+    common.percent = item_default1[0].percent
+    common.schedule = item_default1[0].support_schedule
+
+    console.log('decoding image', support[3][0].image_key)
+    const item_detail = {
+      image_key: support[3][0].image_key,
+    }
+    delete item_default1[0].D_day
+    delete item_default1[0].percent
+    delete item_default1[0].lowPrice
+    const item_default = item_default1[0]
+
 
     result = {
-      item_images,
+      common,
       item_detail,
+      item_default,
     }
   } catch (e) {
     console.log(e.message)
@@ -160,50 +181,50 @@ exports.getSupportDefault = async (req, next) => {
   }
   return result
 }
-
-// 특정 아이돌 서포트 정보 가져오기 (상세정보탭)
-exports.getSupportDetail = async (req, next) => {
-  // const connection = await getConnection()
-  let result
-  try {
-    const support = await idolDao.getSupportDetail(Transaction, req, next)
-    console.log(support)
-    const item_prices = support[1]
-    const max = item_prices[0].item_price
-    let flag = 0
-    for (let i = 1; i < item_prices.length; i++) {
-      if (max < item_prices[i]) {
-        flag = i
-      }
-    }
-    const lowPrice = item_prices[flag]
-    console.log('1123123', support)
-    for (const i in support[0]) {
-      support[0][i].image_key = await cloudfront.video(support[0][i].image_key)
-    }
-    support[3][0].image_key = await cloudfront.video(support[3][0].image_key)
-    support[2][0].D_day = await closingDate(support[2][0].support_finishDate)
-    support[2][0].percent = Math.ceil(await percent(support[2][0].support_currentMoney, support[2][0].support_goalMoney))
-    support[2][0].lowPrice = lowPrice.item_price
-    delete support[2][0].support_finishDate
-    delete support[2][0].support_goalMoney
-
-    const item_detail = support[2][0]
-    const item_images = support[0]
-    const detail_image = support[3][0].image_key
-
-    result = {
-      item_images,
-      item_detail,
-      detail_image,
-    }
-  } catch (e) {
-    console.log(e.message)
-  } finally {
-    // connection.release()
-  }
-  return result
-}
+//
+// // 특정 아이돌 서포트 정보 가져오기 (상세정보탭)
+// exports.getSupportDetail = async (req, next) => {
+//   // const connection = await getConnection()
+//   let result
+//   try {
+//     const support = await idolDao.getSupportDetail(Transaction, req, next)
+//     console.log(support)
+//     const item_prices = support[1]
+//     const max = item_prices[0].item_price
+//     let flag = 0
+//     for (let i = 1; i < item_prices.length; i++) {
+//       if (max < item_prices[i]) {
+//         flag = i
+//       }
+//     }
+//     const lowPrice = item_prices[flag]
+//     console.log('1123123', support)
+//     for (const i in support[0]) {
+//       support[0][i].image_key = await cloudfront.video(support[0][i].image_key)
+//     }
+//     support[3][0].image_key = await cloudfront.video(support[3][0].image_key)
+//     support[2][0].D_day = await closingDate(support[2][0].support_finishDate)
+//     support[2][0].percent = Math.ceil(await percent(support[2][0].support_currentMoney, support[2][0].support_goalMoney))
+//     support[2][0].lowPrice = lowPrice.item_price
+//     delete support[2][0].support_finishDate
+//     delete support[2][0].support_goalMoney
+//
+//     const item_detail = support[2][0]
+//     const item_images = support[0]
+//     const detail_image = support[3][0].image_key
+//
+//     result = {
+//       item_images,
+//       item_detail,
+//       detail_image,
+//     }
+//   } catch (e) {
+//     console.log(e.message)
+//   } finally {
+//     // connection.release()
+//   }
+//   return result
+// }
 
 // 특정 아이돌 리워드 정보 가져오기 (기본정보탭)
 exports.getRewardDefault = async (req, next) => {
@@ -230,68 +251,85 @@ exports.getRewardDefault = async (req, next) => {
     for (const i in reward[0]) {
       reward[0][i].image_key = await cloudfront.video(reward[0][i].image_key)
     }
+    reward[3][0].image_key = await cloudfront.video(reward[3][0].image_key)
     reward[2][0].D_day = await closingDate(reward[2][0].reward_finishDate)
     reward[2][0].percent = Math.ceil(await percent(reward[2][0].reward_currentMoney, reward[2][0].reward_goalMoney))
     reward[2][0].option_name = data3.substring(0, data3.length - 1)
     reward[2][0].lowPrice = lowPrice.item_price
 
-    const item_detail = reward[2][0]
-    const item_images = reward[0]
+    const common = {}
+    // console.log('1111', item_detail)
+    common.item_images = reward[0]
+    common.reward_title = reward[2][0].reward_title
+    common.lowPrice = reward[2][0].lowPrice
+    common.reward_currentMoney = reward[2][0].reward_currentMoney
+    common.D_day = reward[2][0].D_day
+    common.percent = reward[2][0].percent
+    common.schedule = reward[2][0].reward_schedule
+
+    const item_default = reward[2][0]
+    const item_detail = {
+      image_key: reward[3][0].image_key,
+    }
+    delete item_default.lowPrice
+    delete item_default.D_day
+    delete item_default.percent
 
     result = {
-      item_images,
+      common,
       item_detail,
+      item_default,
     }
   } catch (e) {
     console.log(e.message)
   }
   return result
 }
-
-// 특정 아이돌 리워드 정보 가져오기 (상세정보탭)
-exports.getRewardDetail = async (req, next) => {
-  // const connection = await getConnection()
-  let result
-  try {
-    const reward = await idolDao.getRewardDetail(Transaction, req, next)
-    console.log(reward)
-
-    const item_prices = reward[1]
-    const max = item_prices[0].item_price
-    let flag = 0
-    for (let i = 1; i < item_prices.length; i++) {
-      if (max < item_prices[i]) {
-        flag = i
-      }
-    }
-    const lowPrice = item_prices[flag]
-    for (const i in reward[0]) {
-      reward[0][i].image_key = await cloudfront.video(reward[0][i].image_key)
-    }
-    reward[3][0].image_key = await cloudfront.video(reward[3][0].image_key)
-    reward[2][0].D_day = await closingDate(reward[2][0].reward_finishDate)
-    reward[2][0].percent = Math.ceil(await percent(reward[2][0].reward_currentMoney, reward[2][0].reward_goalMoney))
-    reward[2][0].lowPrice = lowPrice.item_price
-    delete reward[2][0].reward_finishDate
-    delete reward[2][0].reward_goalMoney
-
-    const item_detail = reward[2][0]
-    const item_images = reward[0]
-    const detail_image = reward[3][0].image_key
-
-
-    result = {
-      item_images,
-      item_detail,
-      detail_image,
-    }
-  } catch (e) {
-    console.log(e.message)
-  } finally {
-    // connection.release()
-  }
-  return result
-}
+//
+// // 특정 아이돌 리워드 정보 가져오기 (상세정보탭)
+// exports.getRewardDetail = async (req, next) => {
+//   // const connection = await getConnection()
+//   let result
+//   try {
+//     const reward = await idolDao.getRewardDetail(Transaction, req, next)
+//     console.log(reward)
+//
+//     const item_prices = reward[1]
+//     const max = item_prices[0].item_price
+//     let flag = 0
+//     for (let i = 1; i < item_prices.length; i++) {
+//       if (max < item_prices[i]) {
+//         flag = i
+//       }
+//     }
+//     const lowPrice = item_prices[flag]
+//     for (const i in reward[0]) {
+//       reward[0][i].image_key = await cloudfront.video(reward[0][i].image_key)
+//     }
+//     reward[3][0].image_key = await cloudfront.video(reward[3][0].image_key)
+//     reward[2][0].D_day = await closingDate(reward[2][0].reward_finishDate)
+//     reward[2][0].percent = Math.ceil(await percent(reward[2][0].reward_currentMoney, reward[2][0].reward_goalMoney))
+//     reward[2][0].lowPrice = lowPrice.item_price
+//     delete reward[2][0].reward_finishDate
+//     delete reward[2][0].reward_goalMoney
+//
+//     const item_detail = reward[2][0]
+//     const item_images = reward[0]
+//     const detail_image = reward[3][0].image_key
+//
+//
+//     result = {
+//       item_images,
+//       item_detail,
+//       detail_image,
+//     }
+//   } catch (e) {
+//     console.log(e.message)
+//   } finally {
+//     // connection.release()
+//   }
+//   return result
+// }
 // 아이돌 그룹이름 리스트 가져오기
 
 exports.getIdol = async () => {
