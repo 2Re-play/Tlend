@@ -34,7 +34,7 @@ exports.postIdol = (Transaction, req, next) => {
     await connection.query(Query4)
     const Query5 = `
           INSERT INTO IMAGE
-            (reward_banner_idx, image_originalName, image_key, image_location, image_size) 
+            (support_banner_idx, image_originalName, image_key, image_location, image_size) 
       VALUES(${idol_idx[0].idol_idx},
             "${support_banner.originalname}",
             "${support_banner.transforms[0].key}",

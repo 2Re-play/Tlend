@@ -15,7 +15,7 @@ exports.getSearchSupport = async (query) => {
       const supportListKey = await searchDao.supportImageKey(connection, supportItemList[i].support_idx)
       supportItemList[i].image_key = await cloudfront.video(supportListKey.image_key)
       supportItemList[i].percent = Math.ceil(await percent(supportItemList[i].support_currentMoney, supportItemList[i].support_goalMoney))
-      supportItemList[i].d_day = await closingDate(supportItemList[i].support_finishDate)
+      supportItemList[i].D_day = await closingDate(supportItemList[i].support_finishDate)
       delete supportItemList[i].support_currentMoney
       delete supportItemList[i].support_goalMoney
       delete supportItemList[i].support_startDate
@@ -44,7 +44,7 @@ exports.getSearchReward = async (query) => {
       const rewardListKey = await searchDao.rewardImageKey(connection, rewardItemList[i].reward_idx)
       rewardItemList[i].image_key = await cloudfront.video(rewardListKey.image_key)
       rewardItemList[i].percent = Math.ceil(await percent(rewardItemList[i].reward_currentMoney, rewardItemList[i].reward_goalMoney))
-      rewardItemList[i].d_day = await closingDate(rewardItemList[i].reward_finishDate)
+      rewardItemList[i].D_day = await closingDate(rewardItemList[i].reward_finishDate)
       delete rewardItemList[i].reward_currentMoney
       delete rewardItemList[i].reward_goalMoney
       delete rewardItemList[i].reward_startDate

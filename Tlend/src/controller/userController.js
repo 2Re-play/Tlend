@@ -4,31 +4,43 @@ const userService = require('../service/userService')
 
 exports.signUp = async (req, res, next) => {
   const {
-    id, pw, nickname, idolName1, idolName2, idolName3,
+    id, pw, nickname,
   } = req.body
   const sheme = {
     id: Joi.string().required(),
     pw: Joi.string().required(),
     nickname: Joi.string().required(),
-    idolName1: Joi.string().required(),
-    idolName2: Joi.string().required(),
-    idolName3: Joi.string().required(),
   }
   const validation_data = {
     id,
     pw,
     nickname,
-    idolName1,
-    idolName2,
-    idolName3,
   }
   const validation = Joi.validate(validation_data, sheme)
   if (validation.error) {
     throw new Error(403)
   }
   try {
-    await userService.signup(req, next)
-    response.respondJson2('Successfully sign up', res, 200)
+    const result = await userService.signup(req, next)
+    response.respondJson('Successfully sign up', result, res, 200)
+  } catch (e) {
+    if (e.message === '403') {
+      response.respondOnError('형식이 맞지 않습니다.', res, 403)
+    } else {
+      response.respondOnError('서버 내부 에러', res, 500)
+    }
+  }
+}
+
+exports.selectIdol = async (req, res, next) => {
+
+  try {
+    if (req.headers.user_idx) {
+      await userService.selectIdol(req, next)
+      response.respondJson2('Successfully select my baby idol', res, 200)
+    } else {
+      response.respondOnError('The user_idx does not exist in the headers', res, 403)
+    }
   } catch (e) {
     if (e.message === '403') {
       response.respondOnError('형식이 맞지 않습니다.', res, 403)

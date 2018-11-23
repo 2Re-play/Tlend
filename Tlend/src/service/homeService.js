@@ -26,10 +26,11 @@ exports.mainHome = async (req, next) => {
       itemRanking.push(ranking[i].a_idol)
     }
 
-    const idol_name = await homeDao.idxToName(Transaction, itemRanking, next)
-    for (const i in idol_name) {
-      idol_name[i].idol_idx = Number(itemRanking[i])
+    const idol_name1 = await homeDao.idxToName(Transaction, itemRanking, next)
+    for (const i in idol_name1) {
+      idol_name1[i].idol_idx = Number(itemRanking[i])
     }
+    const idol_name = idol_name1.splice(0, 3)
     const media = await homeDao.getMedia(connection, req)
     for (const i in media) {
       media[i].image_key = await cloudfront.video(media[i].image_key)

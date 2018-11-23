@@ -4,13 +4,22 @@ const userDao = require('../dao/userDao')
 
 // 회원가입
 exports.signup = async (req, next) => {
+  let result
   try {
-    await userDao.signUp(Transaction, req, next)
+    result = await userDao.signUp(Transaction, req, next)
+  } catch (e) {
+    console.log(e.message)
+  }
+  return result
+}
+
+exports.selectIdol = async (req, next) => {
+  try {
+    await userDao.selectIdol(Transaction, req, next)
   } catch (e) {
     console.log(e.message)
   }
 }
-
 // 로그인
 exports.signIn = async (req) => {
   const connection = await getConnection()
