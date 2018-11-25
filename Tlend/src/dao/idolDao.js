@@ -95,6 +95,7 @@ exports.getHome = (Transaction, req, next) => {
 exports.getReward = (connection, req) => {
   return new Promise((resolve, reject) => {
     const Query = `SELECT 
+    r.idol_idx,
     reward_idx,
     reward_title,
     user_nickname,
@@ -117,7 +118,7 @@ WHERE
 
 exports.getSupport = (connection, req) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT support_idx, support_title, user_nickname, image_key, support_finishDate, support_currentMoney, support_goalMoney FROM (SUPPORT s JOIN IMAGE USING(support_idx)) JOIN USER USING(user_idx) WHERE s.idol_idx = ${req.params.idol_idx} GROUP BY support_idx ;`
+    const Query = `SELECT s.idol_idx, support_idx, support_title, user_nickname, image_key, support_finishDate, support_currentMoney, support_goalMoney FROM (SUPPORT s JOIN IMAGE USING(support_idx)) JOIN USER USING(user_idx) WHERE s.idol_idx = ${req.params.idol_idx} GROUP BY support_idx ;`
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)

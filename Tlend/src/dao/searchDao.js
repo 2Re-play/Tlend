@@ -1,7 +1,23 @@
 // 검색 투자상품 정렬
 exports.getSearchSupport = (connection, query) => {
   return new Promise((resolve, reject) => {
-    const Query = `SELECT support_idx, support_title, user_nickname, support_finishDate, support_startDate, support_goalMoney, support_currentMoney FROM SUPPORT JOIN USER USING (user_idx) WHERE support_title LIKE '%${query}%'`
+    const Query = `
+  SELECT 
+      idol_idx,
+      support_idx,
+      support_title,
+      user_nickname,
+      support_finishDate,
+      support_startDate,
+      support_goalMoney,
+      support_currentMoney
+  FROM
+      SUPPORT
+          JOIN
+      USER USING (user_idx)
+  WHERE
+      support_title LIKE '%${query}%'
+    `
     connection.query(Query, (err, result) => {
       err && reject(err)
       resolve(result)
@@ -14,6 +30,7 @@ exports.getSearchReward = (connection, query) => {
   return new Promise((resolve, reject) => {
     const Query = `    
     SELECT 
+    idol_idx,
     reward_idx,
     reward_title,
     user_nickname,
