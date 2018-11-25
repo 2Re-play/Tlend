@@ -11,10 +11,9 @@ exports.myBaby = (Transaction, req, next) => {
 
       // const idol = {
       // }
-      console.log('111111', result)
+
       idol_name.push(result[0])
     }
-    console.log(idol_name)
     return idol_name
   }).catch(error => {
     return next(error)

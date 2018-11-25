@@ -21,20 +21,27 @@ exports.mainHome = async (req, next) => {
     ranking.sort((a, b) => { // 오름차순
       return b[sortingField] - a[sortingField]
     })
-    const itemRanking = []
+    const itemRanking1 = []
     for (const i in ranking) {
-      itemRanking.push(ranking[i].a_idol)
+      itemRanking1.push(ranking[i].a_idol)
     }
-
+    console.log('ranking', itemRanking1)
+     const itemRanking = itemRanking1.splice(0, 3)
     const idol_name1 = await homeDao.idxToName(Transaction, itemRanking, next)
+    console.log('idol_idx', idol_name1)
     for (const i in idol_name1) {
       idol_name1[i].idol_idx = Number(itemRanking[i])
     }
     const idol_name = idol_name1.splice(0, 3)
+    console.log('6666666', idol_name)
     const media = await homeDao.getMedia(connection, req)
+    console.log('777777', media)
     for (const i in media) {
       media[i].image_key = await cloudfront.video(media[i].image_key)
     }
+    console.log('아기아기아기', mybaby)
+    console.log('아이돌 랭킹', idol_name)
+    console.log('미디어', media)
     info = {
       mybaby,
       idol_name,

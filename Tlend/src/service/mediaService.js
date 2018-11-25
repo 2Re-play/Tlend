@@ -29,10 +29,18 @@ exports.getMediaDetail = async (req) => {
     const merge = reward.concat(support)
     const array = shuffle(merge)
     const itemList = array.slice(0, 3)
+    for (const i in itemList) {
+      if (itemList[i].support_idx) {
+        itemList[i].type = 'support'
+      } else {
+        itemList[i].type = 'reward'
+      }
+    }
 
     for (const i in itemList) {
       itemList[i].image_key = await cloudfront.video(itemList[i].image_key)
     }
+    
 
     info = {
       media,

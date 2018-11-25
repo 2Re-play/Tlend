@@ -90,7 +90,7 @@ exports.supportFund = (Transaction, next, req) => {
 exports.getSupport = (connection, idol_idx) => {
   return new Promise((resolve, reject) => {
     const Query = `SELECT 
-    support_idx, support_title, user_nickname, image_key
+    r.idol_idx, support_idx, support_title, user_nickname, image_key
 FROM
     (SUPPORT r
     JOIN USER u USING (user_idx))

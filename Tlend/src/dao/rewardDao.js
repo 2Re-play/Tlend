@@ -94,7 +94,7 @@ exports.rewardFund = (Transaction, next, req) => {
 exports.getReward = (connection, idol_idx) => {
   return new Promise((resolve, reject) => {
     const Query = `SELECT 
-    reward_idx, reward_title, user_nickname, image_key
+    r.idol_idx, reward_idx, reward_title, user_nickname, image_key
 FROM
     (REWARD r
     JOIN USER u USING (user_idx))
